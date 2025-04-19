@@ -1,37 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
+import { ThemeProvider } from './contexts/theme'
+import ThemeBtn from './components/ThemeBtn';
+import Card from './components/Card';
 
 
 
 
 function App() {
-  const [color, setColor] = useState("lightgrey")
+  
+  const [themeMode, setThemeMode]= useState("light");
+    const lightTheme =()=>{
+        setThemeMode("light");
+    }
+
+    const darkTheme = ()=> {
+        setThemeMode("dark");
+    }
+
+    useEffect(()=>{
+        document.querySelector('html').classList.remove("light","dark")
+        document.querySelector('html').classList.add(themeMode)
+    },[themeMode])
 
   return (
-    <div className='w-full h-screen duration-200'
-    style={{backgroundColor:color}}
-    > 
-      <div className='fixed flex flex-wrap justify-center  bottom-12 inset-x-0 px-2 py-2 '>
-       <div className='flex flex-wrap justify-center b bg-white px-3 py-2 rounded-2xl'>
-        <button className='outline-none px-4 text-white m-1'
-        style={{backgroundColor:"red"}}
-        onClick={()=>setColor("red")}
-        >Red</button>
-        <button className='outline-none px-4 text-white m-1'
-        style={{backgroundColor:"lightblue"}}
-        onClick={()=>setColor("lightblue")}
-        >Blue</button>
-        <button className='outlonClick={()=>setColor("red")}ine-none px-4 text-white m-1'
-        style={{backgroundColor:"green"}}
-        onClick={()=>setColor("green")}
-        >Green</button>
-       </div>
-       
-      </div>
-      
+    <ThemeProvider value={{themeMode,lightTheme,darkTheme}}>
+
+    
+    <div className="flex flex-wrap min-h-screen items-center">
+        <div className="w-full">
+            <div className="w-full max-w-sm mx-auto flex justify-end mb-4"> 
+            <ThemeBtn></ThemeBtn>           
+            </div>
+
+            <div className="w-full max-w-sm mx-auto">
+            <Card></Card>
+            </div>
+        </div>
     </div>
+    </ThemeProvider>
+
   )
 }
 
